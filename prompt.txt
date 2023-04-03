@@ -1,17 +1,25 @@
-You are asked to come up with a set of 10 diverse task instructions in conversation format. These conversations will be given to a GPT model and we will evaluate the GPT model for completing the instructions from the conversations.
+You are asked to create 7 instructional conversations between an User and an AI.
 
 Here are the requirements:
 1. Try not to repeat the verb for each conversation to maximize diversity.
-2. For each conversation, generate in two languages, Vietnamese and English.
+2. If the AI cannot answer that question, it should deny to answer that question, do not hallucinate the user with false information.
 3. The type of instructional conversations should be diverse. It should covers open-ended generation, classification, editing, etc.
 4. A GPT language model should be able to complete the instruction. For example, do not ask the assistant to create any visual or audio output. For another example, do not ask the assistant to wake you up at 5pm or set a reminder because it cannot perform any action.
 5. The instructions should be less than 3 sentences long. Either an imperative sentence or a question is permitted.
-6. The conversations should cover as much topics as possible: normal conversations, coding assisting, generate marketing posts, help users to write emails, etc.
-7. Each conversation should not be longer than 5 turns from the User.
+6. The conversations could be about, but not limited to:
+- Provide general knowledge on a particular topic or subject.
+- Generate creative writing prompts or ideas for stories.
+- Translate text from one language to another.
+- Provide recommendations for books, movies, TV shows, or music based on user preferences.
+- Generate personalized workout or meal plans based on user goals and preferences.
+- Provide guidance on mental health or emotional well-being, including coping strategies for stress and anxiety.
+Help with financial planning, such as creating a budget or managing investments.
+7. Each conversation should have 5 turns from the users and 5 turns from the AI.
+8. The answer from the AI should be short and clean.
 
-List of 10 conversations:
+Conversations:
 
----Conversation 1---
+---Conversation---
 User: Hello, how are you today?
 AI: Hello, How may I help you today?
 User: Please help me create a marketing post for a product name "Sunlight", the best dishwashing soap
@@ -26,160 +34,33 @@ User: Thank you! Can you make it shorter?
 AI: Absolutely, here's a shorter version:
 
 Introducing Sunlight dish soap - tough on grease, gentle on skin. Say goodbye to stubborn stains and hello to sparkling clean dishes. Try Sunlight today and experience the difference! #Sunlight #DishSoap #CleanDishes #GentleOnSkin
+User: That's great, thanks! Can you suggest any other marketing strategies for promoting Sunlight?
+AI: Of course! Here are some marketing strategies that you could consider for promoting Sunlight:
 
----Conversation 2---
-User: Can you help me create a simple neural network to classify the CIFAR10 dataset in pytorch?
-AI: Yes, I can help you create a simple neural network to classify the CIFAR10 dataset in PyTorch. Here's a sample code:
-```python
-import torch
-import torch.nn as nn
-import torchvision
-import torchvision.transforms as transforms
+1. Social Media Marketing: You could use social media platforms such as Instagram, Facebook, and Twitter to promote your product. You could create engaging posts that showcase the benefits of using Sunlight, share customer reviews and testimonials, and run contests and giveaways to generate buzz around the product.
+2. Influencer Marketing: Collaborating with influencers who have a strong following on social media can be a great way to reach a larger audience. You could send them samples of Sunlight and ask them to share their experience using the product with their followers.
+3. Content Marketing: You could create blog posts, articles, and videos that provide tips and tricks for cleaning dishes and highlight the benefits of using Sunlight. This will not only attract potential customers but also establish your brand as an authority in the cleaning industry.
+4. Point of Sale Promotions: You could offer discounts, coupons, or free samples of Sunlight at the point of sale to encourage customers to try the product. This could help increase brand awareness and generate repeat customers.
 
-# Define device
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+Do any of these strategies sound appealing to you?
+User: These are great strategies, thank you! Can you tell me more about how social media marketing could work for Sunlight?
 
-# Define hyperparameters
-num_epochs = 5
-batch_size = 100
-learning_rate = 0.001
+AI: Sure, social media marketing can be a powerful tool for promoting Sunlight because it allows you to reach a large audience and engage with them in real-time. Here are some tips for using social media to promote Sunlight:
 
-# Load CIFAR10 dataset
-train_dataset = torchvision.datasets.CIFAR10(root='./data', train=True,
-                                             transform=transforms.ToTensor(), download=True)
-test_dataset = torchvision.datasets.CIFAR10(root='./data', train=False,
-                                            transform=transforms.ToTensor())
+1. Use visual content: People tend to respond better to visual content on social media. Use high-quality images or videos that showcase the benefits of using Sunlight to clean dishes. You could also create short, engaging videos that demonstrate how easy it is to use Sunlight.
+2. Use hashtags: Hashtags can help your content reach a larger audience. Use relevant hashtags such as #Sunlight, #DishSoap, #CleanDishes, #GentleOnSkin, and other related hashtags. You could also create your own branded hashtag and encourage your followers to use it when they post about Sunlight.
+3. Engage with your audience: Social media is all about engagement. Respond to comments and messages in a timely manner and show your customers that you care about their feedback. You could also ask your followers to share their experience using Sunlight and feature their posts on your page.
+User: Thank you
+AI: Alright, feel free to reach out if you have any other questions or if you need any assistance in the future. Have a great day!
 
-# Create data loaders
-train_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size,
-                                           shuffle=True)
-test_loader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=batch_size,
-                                          shuffle=False)
-
-# Define the neural network
-class Net(nn.Module):
-    def __init__(self):
-        super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(3, 6, 5)
-        self.pool = nn.MaxPool2d(2, 2)
-        self.conv2 = nn.Conv2d(6, 16, 5)
-        self.fc1 = nn.Linear(16 * 5 * 5, 120)
-        self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, 10)
-
-    def forward(self, x):
-        x = self.pool(torch.relu(self.conv1(x)))
-        x = self.pool(torch.relu(self.conv2(x)))
-        x = x.view(-1, 16 * 5 * 5)
-        x = torch.relu(self.fc1(x))
-        x = torch.relu(self.fc2(x))
-        x = self.fc3(x)
-        return x
-
-# Initialize the model
-model = Net().to(device)
-
-# Define the loss function and optimizer
-criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-
-# Train the model
-total_step = len(train_loader)
-for epoch in range(num_epochs):
-    for i, (images, labels) in enumerate(train_loader):
-        images = images.to(device)
-        labels = labels.to(device)
-
-        # Forward pass
-        outputs = model(images)
-        loss = criterion(outputs, labels)
-
-        # Backward and optimize
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-
-        if (i + 1) % 100 == 0:
-            print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
-                  .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
-
-# Test the model
-model.eval()
-with torch.no_grad():
-    correct = 0
-    total = 0
-    for images, labels in test_loader:
-        images = images.to(device)
-        labels = labels.to(device)
-        outputs = model(images)
-        _, predicted = torch.max(outputs.data, 1)
-        total += labels.size(0)
-        correct += (predicted == labels).sum().item()
-
-    print('Test Accuracy of the model on the {} test images: {} %'.format(total, 100 * correct / total))
-```
-
-In this example, we define a neural network with two convolutional layers followed by three fully connected layers. We then train the model using the CIFAR10 dataset and evaluate its performance on the test set. You can adjust the hyperparameters and modify the network architecture to improve its performance.
-User: Love it, where should I change the code if my dataset have 100 different classses to clasify instead of 10?
-AI: If your dataset has 100 different classes instead of 10, you need to make two changes to the code:
-
-1. Modify the last layer of the neural network to have 100 output units instead of 10:
-```python
-self.fc3 = nn.Linear(84, 100)
-```
-
-2. Update the CrossEntropyLoss to have 100 classes instead of 10:
-```python
-criterion = nn.CrossEntropyLoss()
-```
-
-That's it! With these changes, you can use the same code to train a neural network for image classification with 100 classes.
-User: Now show me the same implementation in TensorFlow
-AI: Sure, here is a TensorFlow implementation for training a simple neural network for CIFAR-10 image classification:
-```python
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers, models, optimizers
-import numpy as np
-
-# Load the CIFAR-10 dataset and normalize the pixel values to [0, 1]
-(x_train, y_train), (x_test, y_test) = keras.datasets.cifar10.load_data()
-x_train, x_test = x_train / 255.0, x_test / 255.0
-
-# Define the neural network architecture
-model = models.Sequential([
-    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)),
-    layers.MaxPooling2D((2, 2)),
-    layers.Conv2D(64, (3, 3), activation='relu'),
-    layers.MaxPooling2D((2, 2)),
-    layers.Flatten(),
-    layers.Dense(64, activation='relu'),
-    layers.Dense(10)  # <-- change 10 to 100 for 100 classes
-])
-
-# Define the loss function and optimizer
-loss_fn = keras.losses.SparseCategoricalCrossentropy(from_logits=True)
-optimizer = optimizers.Adam()
-
-# Compile the model
-model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
-
-# Train the model
-model.fit(x_train, y_train, epochs=5, batch_size=100)
-
-# Evaluate the model
-test_loss, test_acc = model.evaluate(x_test, y_test)
-print("Test accuracy:", test_acc)
-```
-
-In this example, we use TensorFlow and Keras to define a simple neural network with two convolutional layers followed by two fully connected layers. We then train the model using the CIFAR-10 dataset and evaluate its performance on the test set. To modify the code for 100 classes, you just need to change the last dense layer to have 100 output units:
-```python
-layers.Dense(100)
-```
-
-That's it! With this change, you can train a neural network for image classification with 100 classes.
-User: Thank you very much
-AI: You're welcome! I'm glad I could help. If you have any other questions, feel free to ask.
-
-
-
+---Conversation---
+User: Hello, can you help me translate "Hello, how are you?" to Spanish?
+AI: Of course! "Hello, how are you?" translates to "Hola, ¿cómo estás?" in Spanish. Is there anything else you need help with?
+User: Yes, can you translate "I love you" to French?
+AI: Certainly! "I love you" translates to "Je t'aime" in French. Do you need help with anything else?
+User: Yes, how do you say "Thank you" in Japanese?
+AI: "Thank you" translates to "Arigatou" in Japanese. Is there anything else you would like to know?
+User: Yes, can you translate "Goodbye" in Italian?
+AI: Absolutely! "Goodbye" translates to "Arrivederci" in Italian. Let me know if you need further assistance!
+User: That's all, thank you very much!
+AI: You're welcome! Don't hesitate to reach out if you need help in the future. Have a great day!

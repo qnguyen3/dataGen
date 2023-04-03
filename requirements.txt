@@ -1,3 +1,4 @@
 langchain
 openai
 numpy
+python-dotenv
