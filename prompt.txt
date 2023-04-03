@@ -1,0 +1,185 @@
+You are asked to come up with a set of 10 diverse task instructions in conversation format. These conversations will be given to a GPT model and we will evaluate the GPT model for completing the instructions from the conversations.
+
+Here are the requirements:
+1. Try not to repeat the verb for each conversation to maximize diversity.
+2. For each conversation, generate in two languages, Vietnamese and English.
+3. The type of instructional conversations should be diverse. It should covers open-ended generation, classification, editing, etc.
+4. A GPT language model should be able to complete the instruction. For example, do not ask the assistant to create any visual or audio output. For another example, do not ask the assistant to wake you up at 5pm or set a reminder because it cannot perform any action.
+5. The instructions should be less than 3 sentences long. Either an imperative sentence or a question is permitted.
+6. The conversations should cover as much topics as possible: normal conversations, coding assisting, generate marketing posts, help users to write emails, etc.
+7. Each conversation should not be longer than 5 turns from the User.
+
+List of 10 conversations:
+
+---Conversation 1---
+User: Hello, how are you today?
+AI: Hello, How may I help you today?
+User: Please help me create a marketing post for a product name "Sunlight", the best dishwashing soap
+AI: Sure, I'd be happy to help you create a marketing post for your product "Sunlight"! Here's an example post:
+
+Introducing Sunlight, the ultimate dishwashing soap! Say goodbye to tough grease and stubborn stains on your dishes with Sunlight's powerful formula. Our dish soap cuts through grease quickly and easily, leaving your dishes sparkling clean and smelling fresh.
+
+Not only is Sunlight tough on grease, but it's also gentle on your hands. Our formula contains no harsh chemicals and is gentle on skin, making it a great choice for anyone with sensitive skin.
+
+With Sunlight, you'll never have to worry about dirty dishes again. Try it today and see the difference for yourself! #Sunlight #DishwashingSoap #CleanDishes #GreaseRemoval #GentleOnSkin
+User: Thank you! Can you make it shorter?
+AI: Absolutely, here's a shorter version:
+
+Introducing Sunlight dish soap - tough on grease, gentle on skin. Say goodbye to stubborn stains and hello to sparkling clean dishes. Try Sunlight today and experience the difference! #Sunlight #DishSoap #CleanDishes #GentleOnSkin
+
+---Conversation 2---
+User: Can you help me create a simple neural network to classify the CIFAR10 dataset in pytorch?
+AI: Yes, I can help you create a simple neural network to classify the CIFAR10 dataset in PyTorch. Here's a sample code:
+```python
+import torch
+import torch.nn as nn
+import torchvision
+import torchvision.transforms as transforms
+
+# Define device
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+# Define hyperparameters
+num_epochs = 5
+batch_size = 100
+learning_rate = 0.001
+
+# Load CIFAR10 dataset
+train_dataset = torchvision.datasets.CIFAR10(root='./data', train=True,
+                                             transform=transforms.ToTensor(), download=True)
+test_dataset = torchvision.datasets.CIFAR10(root='./data', train=False,
+                                            transform=transforms.ToTensor())
+
+# Create data loaders
+train_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size,
+                                           shuffle=True)
+test_loader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=batch_size,
+                                          shuffle=False)
+
+# Define the neural network
+class Net(nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        self.conv1 = nn.Conv2d(3, 6, 5)
+        self.pool = nn.MaxPool2d(2, 2)
+        self.conv2 = nn.Conv2d(6, 16, 5)
+        self.fc1 = nn.Linear(16 * 5 * 5, 120)
+        self.fc2 = nn.Linear(120, 84)
+        self.fc3 = nn.Linear(84, 10)
+
+    def forward(self, x):
+        x = self.pool(torch.relu(self.conv1(x)))
+        x = self.pool(torch.relu(self.conv2(x)))
+        x = x.view(-1, 16 * 5 * 5)
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
+
+# Initialize the model
+model = Net().to(device)
+
+# Define the loss function and optimizer
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+# Train the model
+total_step = len(train_loader)
+for epoch in range(num_epochs):
+    for i, (images, labels) in enumerate(train_loader):
+        images = images.to(device)
+        labels = labels.to(device)
+
+        # Forward pass
+        outputs = model(images)
+        loss = criterion(outputs, labels)
+
+        # Backward and optimize
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        if (i + 1) % 100 == 0:
+            print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
+                  .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
+
+# Test the model
+model.eval()
+with torch.no_grad():
+    correct = 0
+    total = 0
+    for images, labels in test_loader:
+        images = images.to(device)
+        labels = labels.to(device)
+        outputs = model(images)
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+
+    print('Test Accuracy of the model on the {} test images: {} %'.format(total, 100 * correct / total))
+```
+
+In this example, we define a neural network with two convolutional layers followed by three fully connected layers. We then train the model using the CIFAR10 dataset and evaluate its performance on the test set. You can adjust the hyperparameters and modify the network architecture to improve its performance.
+User: Love it, where should I change the code if my dataset have 100 different classses to clasify instead of 10?
+AI: If your dataset has 100 different classes instead of 10, you need to make two changes to the code:
+
+1. Modify the last layer of the neural network to have 100 output units instead of 10:
+```python
+self.fc3 = nn.Linear(84, 100)
+```
+
+2. Update the CrossEntropyLoss to have 100 classes instead of 10:
+```python
+criterion = nn.CrossEntropyLoss()
+```
+
+That's it! With these changes, you can use the same code to train a neural network for image classification with 100 classes.
+User: Now show me the same implementation in TensorFlow
+AI: Sure, here is a TensorFlow implementation for training a simple neural network for CIFAR-10 image classification:
+```python
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers, models, optimizers
+import numpy as np
+
+# Load the CIFAR-10 dataset and normalize the pixel values to [0, 1]
+(x_train, y_train), (x_test, y_test) = keras.datasets.cifar10.load_data()
+x_train, x_test = x_train / 255.0, x_test / 255.0
+
+# Define the neural network architecture
+model = models.Sequential([
+    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)),
+    layers.MaxPooling2D((2, 2)),
+    layers.Conv2D(64, (3, 3), activation='relu'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Flatten(),
+    layers.Dense(64, activation='relu'),
+    layers.Dense(10)  # <-- change 10 to 100 for 100 classes
+])
+
+# Define the loss function and optimizer
+loss_fn = keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+optimizer = optimizers.Adam()
+
+# Compile the model
+model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
+
+# Train the model
+model.fit(x_train, y_train, epochs=5, batch_size=100)
+
+# Evaluate the model
+test_loss, test_acc = model.evaluate(x_test, y_test)
+print("Test accuracy:", test_acc)
+```
+
+In this example, we use TensorFlow and Keras to define a simple neural network with two convolutional layers followed by two fully connected layers. We then train the model using the CIFAR-10 dataset and evaluate its performance on the test set. To modify the code for 100 classes, you just need to change the last dense layer to have 100 output units:
+```python
+layers.Dense(100)
+```
+
+That's it! With this change, you can train a neural network for image classification with 100 classes.
+User: Thank you very much
+AI: You're welcome! I'm glad I could help. If you have any other questions, feel free to ask.
+
+
+
