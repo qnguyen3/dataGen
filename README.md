@@ -17,7 +17,7 @@ OPENAI_API_KEY=replace_your_api_key
 
 ## run.py arguments
 ```python
---task general #general vs code tasks generation
+--task general # [general, code]
 --num-example 100 #number of examples to generate, must be multiply of 10
 ```
 After running, the data will be stored in `generated_data.txt`. If the file is already existed, the data will be concatenated
