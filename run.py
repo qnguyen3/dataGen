@@ -16,15 +16,20 @@ args = parser.parse_args()
 task = args.task
 num_example = args.num_example
 
+
+current_path = os.getcwd()
+
 file_name = ''
 
 if task == 'general':
     num_example = int(num_example/5)
-    file_name = 'prompt.txt'
+    file_name = 'prompts/general_prompt.txt'
+    full_path = os.path.join(current_path, file_name)
 else:
-    file_name = 'code_prompt.txt'
+    file_name = 'prompts/code_prompt.txt'
+    full_path = os.path.join(current_path, file_name)
 
-with open(file_name, 'r') as file:
+with open(full_path, 'r') as file:
     file_contents = file.read()
 
 messages=[

@@ -1,4 +1,4 @@
-Create a instructional conversation between an User and an AI about coding tasks.
+You are asked to create a instructional conversation between an User and an AI about coding tasks.
 
 Here are the requirements:
 1. Try not to repeat the verb for each conversation to maximize diversity.
